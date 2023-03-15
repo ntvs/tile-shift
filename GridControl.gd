@@ -3,7 +3,7 @@ extends Node2D
 # REFERENCES
 onready var cursor = $CursorSprite
 onready var gridBG = $GridBG
-
+var sel_tile
 # Declare member variables here. Examples:
 var grid = []
 var rows = 5
@@ -17,22 +17,30 @@ var spriteWidth = 64
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	
+	var screenSize = get_viewport_rect().size
+	# Add a tile symbol 
+	var scene = load("res://Symbol.tscn")
 	# Setup Array
 	for x in range(rows):
 		grid.append([])
-		for _y in range(columns):
-			grid[x].append(0)
+		for y in range(columns):
+			var tile = scene.instance()
+			tile.position.x = screenSize.x/2 - (2*64) + x * spriteWidth
+			tile.position.y = screenSize.y/2 - (2*64) + y * spriteWidth
+			add_child(tile)
+			grid[x].append(tile)
 			
 	# Setup cursor sprite in top left of the grid
-	var screenSize = get_viewport_rect().size
+	
 	cursor.position.x = screenSize.x/2 - (2*64)
 	cursor.position.y = screenSize.y/2 - (2*64)
 	
 	# Center the grid sprite
 	gridBG.position.x = screenSize.x/2
 	gridBG.position.y = screenSize.y/2
-
+	
+	
+	
 
 func _physics_process(delta):
 	handleMove(delta)
@@ -60,6 +68,9 @@ func handleMove(_delta):
 		#print(gridPosition)
 	elif Input.is_action_just_pressed("ui_accept"):
 		print("Selected element: " + str(gridPosition))
+		sel_tile = grid[gridPosition.x][gridPosition.y]
+		print("Selected element: " + str(sel_tile.color_name))
+		
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

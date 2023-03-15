@@ -35,7 +35,7 @@ __meta__ = {
 
 [node name="CursorSprite" type="Sprite" parent="Grid"]
 scale = Vector2( 0.64, 0.64 )
-z_index = 2
+z_index = 3
 texture = ExtResource( 1 )
 
 [node name="GridBG" type="Sprite" parent="Grid"]
