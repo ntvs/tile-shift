@@ -6,14 +6,14 @@ onready var gridBG = $GridBG
 var sel_tile
 # Declare member variables here. Examples:
 var grid = []
-var rows = 5
-var columns = 5
+var rows = 7
+var columns = 7
 
 var gridPosition = Vector2.ZERO
 var incrementor = 1.0
 
 var spriteWidth = 64
-
+var spriteOffset = 3
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -25,15 +25,16 @@ func _ready():
 		grid.append([])
 		for y in range(columns):
 			var tile = scene.instance()
-			tile.position.x = screenSize.x/2 - (2*64) + x * spriteWidth
-			tile.position.y = screenSize.y/2 - (2*64) + y * spriteWidth
+			#times 2 to split the screen in haft
+			tile.position.x = screenSize.x/2 - (spriteOffset * spriteWidth) + x * spriteWidth
+			tile.position.y = screenSize.y/2 - (spriteOffset * spriteWidth) + y * spriteWidth
 			add_child(tile)
 			grid[x].append(tile)
 			
 	# Setup cursor sprite in top left of the grid
 	
-	cursor.position.x = screenSize.x/2 - (2*64)
-	cursor.position.y = screenSize.y/2 - (2*64)
+	cursor.position.x = screenSize.x/2 - (spriteOffset * spriteWidth)
+	cursor.position.y = screenSize.y/2 - (spriteOffset * spriteWidth)
 	
 	# Center the grid sprite
 	gridBG.position.x = screenSize.x/2
