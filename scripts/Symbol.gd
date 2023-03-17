@@ -5,7 +5,7 @@ onready var NUM_OF_HF = tile.hframes - 1
 var color_name
 var rng = RandomNumberGenerator.new()
 
-#this is just for debguing 
+#this is just for debguing might dele this later 
 func getColor(color_id):
 	var color
 	match color_id:
