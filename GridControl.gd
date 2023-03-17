@@ -4,17 +4,20 @@ extends Node2D
 onready var cursor = $CursorSprite
 onready var gridBG = $GridBG
 var sel_tile
+var previousX
+var previousY
 # Declare member variables here. Examples:
 var grid = []
-var rows = 5
-var columns = 5
+var rows = 7
+var columns = 7
 
 var gridPosition = Vector2.ZERO
 var incrementor = 1.0
 
 var spriteWidth = 64
-
-
+var spriteOffset = 3
+var selected = false
+var temp
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var screenSize = get_viewport_rect().size
@@ -25,15 +28,16 @@ func _ready():
 		grid.append([])
 		for y in range(columns):
 			var tile = scene.instance()
-			tile.position.x = screenSize.x/2 - (2*64) + x * spriteWidth
-			tile.position.y = screenSize.y/2 - (2*64) + y * spriteWidth
+			#times 2 to split the screen in haft
+			tile.position.x = screenSize.x/2 - (spriteOffset * spriteWidth) + x * spriteWidth
+			tile.position.y = screenSize.y/2 - (spriteOffset * spriteWidth) + y * spriteWidth
 			add_child(tile)
 			grid[x].append(tile)
 			
 	# Setup cursor sprite in top left of the grid
 	
-	cursor.position.x = screenSize.x/2 - (2*64)
-	cursor.position.y = screenSize.y/2 - (2*64)
+	cursor.position.x = screenSize.x/2 - (spriteOffset * spriteWidth)
+	cursor.position.y = screenSize.y/2 - (spriteOffset * spriteWidth)
 	
 	# Center the grid sprite
 	gridBG.position.x = screenSize.x/2
@@ -44,12 +48,14 @@ func _ready():
 
 func _physics_process(delta):
 	handleMove(delta)
-
+	
+	
 # Possible optimizations:
 # Couple the grid indices to the movement so that when the index changes,
 # the position can update with it
 # Plus all this repetitive code can probably be reorganized
 func handleMove(_delta):
+	
 	if Input.is_action_just_pressed("ui_up") and gridPosition.y-incrementor >= 0:
 		gridPosition.y -= incrementor
 		cursor.position.y -= incrementor*spriteWidth
@@ -67,9 +73,18 @@ func handleMove(_delta):
 		cursor.position.x += incrementor*spriteWidth
 		#print(gridPosition)
 	elif Input.is_action_just_pressed("ui_accept"):
-		print("Selected element: " + str(gridPosition))
-		sel_tile = grid[gridPosition.x][gridPosition.y]
-		print("Selected element: " + str(sel_tile.color_name))
+		if !selected:
+			print("Selected element: " + str(gridPosition))
+			sel_tile = grid[gridPosition.x][gridPosition.y].tile.frame
+			previousX = gridPosition.x
+			previousY = gridPosition.y
+			
+		else:
+			print("swapped")
+			var temp = grid[gridPosition.x][gridPosition.y].tile.frame
+			grid[gridPosition.x][gridPosition.y].tile.frame = sel_tile
+			grid[previousX][previousY].tile.frame = temp
+		selected  = !selected
 		
 
 
