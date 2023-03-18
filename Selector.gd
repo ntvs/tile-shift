@@ -20,9 +20,9 @@ func _ready():
 
 # Per "tick" looped logic - _process() happens as fast as possible, unlike physics
 func _physics_process(delta):
-	#handleFluidInput(delta)
+	handleFluidInput(delta)
 	#handleInput()
-	pass
+	#pass
 
 #Fluid cursor-like movement -> like smash cursor
 func handleFluidInput(delta):
