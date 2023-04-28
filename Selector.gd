@@ -3,9 +3,9 @@ extends KinematicBody2D
 
 # Declare member variables here. Examples:
 var velocity = Vector2.ZERO
-var acceleration = 50
-var friction = 20
-var maxSpeed = 5
+export var acceleration = 50
+export var friction = 20
+export var maxSpeed = 5
 
 
 # Called when the node enters the scene tree for the first time.
